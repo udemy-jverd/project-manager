@@ -1,4 +1,4 @@
-# Drag'n drop
+# Project manager
 
 A typescript project management app from the typescript Udemy course.
 
