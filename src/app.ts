@@ -185,6 +185,7 @@ class ProjectInput {
     };
 
     if (!isValid(titleProps) && !isValid(descProps) && !isValid(peopleProps)) {
+      /* eslint-disable no-alert */
       alert('Invalid input, please try again!');
       return [];
     }
@@ -209,6 +210,7 @@ class ProjectInput {
   }
 }
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 const projectInput = new ProjectInput();
 const activeProjectList = new ProjectList('active');
 const finishedProjectList = new ProjectList('finished');
