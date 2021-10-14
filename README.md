@@ -1,6 +1,6 @@
 # Drag'n drop
 
-A typescript drag'n drop project from the typescript Udemy course.
+A typescript project management app from the typescript Udemy course.
 
 ### Install dependencies
 
