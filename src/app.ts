@@ -1,13 +1,13 @@
-interface Draggable {
+interface IDraggable {
   dragStartHandler(event: DragEvent): void,
   dragEndHandler(event: DragEvent): void
 }
 
-// interface DragTarget {
-//   dragOverHandler(event: DragEvent): void,
-//   dropHandler(event: DragEvent): void,
-//   dragLeaveHandler(event: DragEvent): void
-// }
+interface IDragTarget {
+  dragOverHandler(event: DragEvent): void,
+  dropHandler(event: DragEvent): void,
+  dragLeaveHandler(event: DragEvent): void
+}
 
 interface IValidatable {
   value: string | number,
@@ -98,7 +98,18 @@ class ProjectState extends State<Project> {
         ProjectStatus.Active,
       ),
     );
+    this.updateListeners();
+  }
 
+  public moveProject(projectId: string, newStatus: ProjectStatus) {
+    const currentProject = this.projects.find((project) => project.id === projectId);
+    if (currentProject && currentProject.status !== newStatus) {
+      currentProject.status = newStatus;
+      this.updateListeners();
+    }
+  }
+
+  public updateListeners() {
     this.listeners.forEach((listenerFn) => {
       listenerFn(this.projects.slice());
     });
@@ -112,7 +123,12 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   private hostElement: T;
   protected element: U;
 
-  constructor(templateId: string, hostElement: string, insertAtStart: boolean, newElementId?: string) {
+  constructor(
+    templateId: string,
+    hostElement: string,
+    insertAtStart: boolean,
+    newElementId?: string,
+  ) {
     this.templateElement = document.getElementById(templateId)! as HTMLTemplateElement;
     this.hostElement = document.getElementById(hostElement)! as T;
 
@@ -136,7 +152,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
   abstract renderContent(): void;
 }
 
-class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements Draggable {
+class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements IDraggable {
   private project: Project;
 
   constructor(hostId: string, project: Project) {
@@ -148,12 +164,13 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements 
   }
 
   dragStartHandler = (event: DragEvent): void => {
-    console.log(event);
+    const e = event;
+    e.dataTransfer!.setData('text/plain', this.project.id);
+    e.dataTransfer!.effectAllowed = 'move';
   };
 
-  dragEndHandler = (event: DragEvent): void => {
-    console.log(event);
-  };
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  dragEndHandler = (event: DragEvent): void => {};
 
   public getPeopleLabel() {
     const { people } = this.project;
@@ -172,7 +189,7 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement> implements 
   }
 }
 
-class ProjectList extends Component<HTMLDivElement, HTMLElement> {
+class ProjectList extends Component<HTMLDivElement, HTMLElement> implements IDragTarget {
   private type;
   private assignedProjects: Project[];
 
@@ -184,12 +201,37 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> {
     this.renderContent();
   }
 
+  dragOverHandler = (event: DragEvent): void => {
+    if (event.dataTransfer) {
+      event.preventDefault();
+      const listEl = this.element.querySelector('ul')!;
+      listEl.classList.add('droppable');
+    }
+  };
+
+  dropHandler = (event: DragEvent): void => {
+    event.preventDefault();
+    const projectId = event.dataTransfer!.getData('text/plain');
+    const status = this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished;
+    projectState.moveProject(projectId, status);
+  };
+
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  dragLeaveHandler = (event: DragEvent): void => {
+    const listEl = this.element.querySelector('ul')!;
+    listEl.classList.remove('droppable');
+  };
+
   public renderContent() {
     this.element.querySelector('ul')!.id = `${this.type}-projects-list`;
     this.element.querySelector('h2')!.textContent = `${this.type.toUpperCase()} PROJECTS`;
   }
 
   public configure() {
+    this.element.addEventListener('dragover', this.dragOverHandler);
+    this.element.addEventListener('dragleave', this.dragLeaveHandler);
+    this.element.addEventListener('drop', this.dropHandler);
+
     projectState.addListener((projects: Project[]) => {
       const filteredProjects = projects.filter((project) => {
         if (this.type === 'active') {
@@ -229,9 +271,8 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     this.element.addEventListener('submit', this.submitHandler);
   }
 
-  public renderContent() {
-    console.log(this);
-  }
+  /* eslint-disable class-methods-use-this */
+  public renderContent() {}
 
   private retrieveUserInputs(): [string, string, number] | [] {
     const title = this.titleInputEl.value;
@@ -262,7 +303,7 @@ class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     return [title, description, +peopleAmount];
   }
 
-  // () => used to access to `this` as the current class and not to the event
+  // () => used to access to `this` as the current class and not to the event param
   private submitHandler = (event: Event) => {
     event.preventDefault();
     const userInputs = this.retrieveUserInputs();
