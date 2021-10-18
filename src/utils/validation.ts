@@ -1,6 +1,6 @@
 import IValidatable from '../interfaces/validation';
 
-const isValid = (input: IValidatable) => {
+const isValid = (input: IValidatable): boolean => {
   let isOk = true;
   if (input.required) {
     isOk = isOk && input.value.toString().trim().length !== 0;

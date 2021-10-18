@@ -1,4 +1,4 @@
-import ProjectStatus from '../utils/project-status.js';
+import ProjectStatus from '../utils/projectStatus.js';
 
 class Project {
   public id: string;

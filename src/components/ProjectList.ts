@@ -1,7 +1,7 @@
 import BaseComponent from './BaseComponent.js';
-import { IDragTarget } from '../interfaces/drag-n-drop.js';
+import { IDragTarget } from '../interfaces/dragDrop.js';
 import Project from '../models/Project.js';
-import ProjectStatus from '../utils/project-status.js';
+import ProjectStatus from '../utils/projectStatus.js';
 import ProjectItem from './ProjectItem.js';
 import projectState from '../states/ProjectState.js';
 
@@ -38,12 +38,12 @@ class ProjectList extends BaseComponent<HTMLDivElement, HTMLElement> implements 
     listEl.classList.remove('droppable');
   };
 
-  public renderContent() {
+  public renderContent(): void {
     this.element.querySelector('ul')!.id = `${this.type}-projects-list`;
     this.element.querySelector('h2')!.textContent = `${this.type.toUpperCase()} PROJECTS`;
   }
 
-  public configure() {
+  public configure(): void {
     this.element.addEventListener('dragover', this.dragOverHandler);
     this.element.addEventListener('dragleave', this.dragLeaveHandler);
     this.element.addEventListener('drop', this.dropHandler);

@@ -1,6 +1,6 @@
 import State from './State.js';
 import Project from '../models/Project.js';
-import ProjectStatus from '../utils/project-status.js';
+import ProjectStatus from '../utils/projectStatus.js';
 
 // SINGLETON
 class ProjectState extends State<Project> {

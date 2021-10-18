@@ -16,12 +16,12 @@ class ProjectInput extends BaseComponent<HTMLDivElement, HTMLFormElement> {
     this.configure();
   }
 
-  public configure() {
+  public configure(): void {
     this.element.addEventListener('submit', this.submitHandler);
   }
 
   /* eslint-disable class-methods-use-this */
-  public renderContent() {}
+  public renderContent(): void {}
 
   private retrieveUserInputs(): [string, string, number] | [] {
     const title = this.titleInputEl.value;
@@ -52,7 +52,7 @@ class ProjectInput extends BaseComponent<HTMLDivElement, HTMLFormElement> {
     return [title, description, +peopleAmount];
   }
 
-  // () => used to access to `this` as the current class and not to the event param
+  // () => used to access to `this` as the current class and not to the event
   private submitHandler = (event: Event) => {
     event.preventDefault();
     const userInputs = this.retrieveUserInputs();
