@@ -15,10 +15,10 @@
       "project": "./tsconfig.json"
     },
     "rules": {
-      "max-len": [ "warn", { "code": 100 } ],
+      "max-len": [ "warn", { "code": 80 } ],
       "no-console": "warn",
       "no-alert": "warn",
-      "max-classes-per-file": "off",
+      "no-new": "off",
       "@typescript-eslint/lines-between-class-members": "off",
       "@typescript-eslint/no-non-null-assertion": "off"
     }

@@ -14,11 +14,15 @@ npm i
 npm run compile
 ```
 
-### Usage
+### Local usage
+
+In a first shell:
 
 ```sh
-npm run start
+npm run dev-compile
 ```
+
+In a second shell:
 
 ```sh
 npm run dev
