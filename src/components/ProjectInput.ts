@@ -1,7 +1,7 @@
-import BaseComponent from './BaseComponent.js';
-import IValidatable from '../interfaces/validation.js';
-import isValid from '../utils/validation.js';
-import projectState from '../states/ProjectState.js';
+import BaseComponent from './BaseComponent';
+import IValidatable from '../interfaces/validation';
+import isValid from '../utils/validation';
+import projectState from '../states/ProjectState';
 
 class ProjectInput extends BaseComponent<HTMLDivElement, HTMLFormElement> {
   private titleInputEl: HTMLInputElement;

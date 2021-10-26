@@ -1,6 +1,6 @@
-import BaseComponent from './BaseComponent.js';
-import { IDraggable } from '../interfaces/dragDrop.js';
-import Project from '../models/Project.js';
+import BaseComponent from './BaseComponent';
+import { IDraggable } from '../interfaces/dragDrop';
+import Project from '../models/Project';
 
 class ProjectItem extends BaseComponent<HTMLUListElement, HTMLLIElement> implements IDraggable {
   private project: Project;

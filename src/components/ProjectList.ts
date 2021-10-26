@@ -1,9 +1,9 @@
-import BaseComponent from './BaseComponent.js';
-import { IDragTarget } from '../interfaces/dragDrop.js';
-import Project from '../models/Project.js';
-import ProjectStatus from '../utils/projectStatus.js';
-import ProjectItem from './ProjectItem.js';
-import projectState from '../states/ProjectState.js';
+import BaseComponent from './BaseComponent';
+import { IDragTarget } from '../interfaces/dragDrop';
+import Project from '../models/Project';
+import ProjectStatus from '../utils/projectStatus';
+import ProjectItem from './ProjectItem';
+import projectState from '../states/ProjectState';
 
 class ProjectList extends BaseComponent<HTMLDivElement, HTMLElement> implements IDragTarget {
   private type;
